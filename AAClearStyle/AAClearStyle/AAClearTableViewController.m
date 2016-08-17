@@ -12,6 +12,11 @@
 
 @interface AAClearTableViewController () {
     NSMutableArray* _toDoItems;
+    
+    AAClearPullToAdd* _pullAddNewBehaviour;
+    
+    // the offset applied to cells when entering 'edit mode'
+    float _editingOffset;
 }
 
 @end
@@ -25,12 +30,19 @@
     
     [self setDefaultItems];
     
-    //Set the estimated height for tableview cell
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 44.0;
     
-    self.tableView.backgroundColor = [UIColor blackColor];
-    self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
+    
+    //Set the estimated height for tableview cell
+    self.myTableView.rowHeight = UITableViewAutomaticDimension;
+    self.myTableView.estimatedRowHeight = 44.0;
+    
+    self.myTableView.backgroundColor = [UIColor blackColor];
+    self.myTableView.separatorStyle = UITableViewCellSelectionStyleNone;
+    
+//    self.myTableView.delegate = self;
+    self.myTableView.dataSource = self;
+    self.myTableView.myDataSource = self;
+    _pullAddNewBehaviour = [[AAClearPullToAdd alloc] initWithTableView:self.myTableView];
     
     //Cannot use it if you want to load the cell from the interface builder.
 //    [self.tableView registerClass:[AAClearCell class] forCellReuseIdentifier:reuseIdentifier];
@@ -67,16 +79,73 @@
     return [UIColor colorWithRed:1.0 green:val blue:0.1 alpha:1.0];
 }
 
-#pragma mark - AAClearCell delegate
+#pragma mark - AAClearCellDelegate
 - (void)toDoItemDeleted:(id)toDoItem {
-    NSUInteger index = [_toDoItems indexOfObject:toDoItem];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+//    NSUInteger index = [_toDoItems indexOfObject:toDoItem];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+//    [_toDoItems removeObject:toDoItem];
+//    
+//    [self.tableView beginUpdates];
+//    [self.tableView deleteRowsAtIndexPaths:@[indexPath]
+//                          withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [self.tableView endUpdates];
+    
+    float delay = 0.0;
+    NSTimeInterval interval = 0.3;
     [_toDoItems removeObject:toDoItem];
     
-    [self.tableView beginUpdates];
-    [self.tableView deleteRowsAtIndexPaths:@[indexPath]
-                          withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView endUpdates];
+    NSArray* visibleCells = [self.myTableView visibleCells];
+    
+    UIView* lastView = [visibleCells lastObject];
+    
+    bool startAnimating = false;
+    
+    for (AAClearCell* cell in visibleCells) {
+        if (startAnimating) {
+            [UIView animateWithDuration:interval
+                                  delay:delay
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 cell.frame = CGRectOffset(cell.frame, 0.0f, -cell.frame.size.height);
+                             } completion:^(BOOL finished) {
+                                 if (cell == lastView) {
+                                     [self.myTableView reloadData];
+                                 }
+                             }];
+            delay += 0.03;
+        }
+        
+        //if you have reached the item that was deleted, start animating
+        if (cell.todoItem == toDoItem) {
+            startAnimating = true;
+            cell.hidden = YES;
+        }
+    }
+}
+
+- (void) cellDidBeginEditing:(AAClearCell*) editingCell {
+    _editingOffset = _myTableView.contentOffset.y - editingCell.frame.origin.y;
+    for (AAClearCell* cell in [_myTableView visibleCells]) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             cell.transform = CGAffineTransformMakeTranslation(0, _editingOffset);
+                             if (cell != editingCell) {
+                                 cell.alpha = 0.3;
+                             }
+                         }];
+    }
+}
+
+- (void) cellDidEndEditing:(AAClearCell*) editCell {
+    for (AAClearCell* cell in [_myTableView visibleCells]) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             cell.transform = CGAffineTransformIdentity;
+                             if (cell != editCell) {
+                                 cell.alpha = 1.0;
+                             }
+                         }];
+    }
 }
 
 #pragma mark - Table view data source
@@ -96,13 +165,33 @@
     AATodoItem *item = _toDoItems[index];
     cell.delegate = self;
     cell.todoItem = item;
+    cell.backgroundColor = [self colorForIndex:indexPath.row];
     return cell;
 }
 
-#pragma mark - Table view delegate
+#pragma mark - AAClearTable View Data Source
+- (void)itemAdded {
+    [self itemAddedAtIndex:0];
+    NSLog(@"Item added");
+}
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    cell.backgroundColor = [self colorForIndex:indexPath.row];
+- (void)itemAddedAtIndex:(NSInteger)index {
+    // create the new item
+    AATodoItem* toDoItem = [[AATodoItem alloc]init];
+    [_toDoItems insertObject:toDoItem atIndex:index];
+    
+    // refresh the table
+    [_myTableView reloadData];
+    
+    // enter edit mode
+    AAClearCell* editCell;
+    for (AAClearCell* cell in _myTableView.visibleCells) {
+        if (cell.todoItem == toDoItem) {
+            editCell = cell;
+            break;
+        }
+    }
+    [editCell.textLabel becomeFirstResponder];
 }
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright © 2016年 An, Fowafolo. All rights reserved.
 //
 
-#import "AAStrikeLabel.h"
+#import "AAStrikeTextField.h"
 
-@implementation AAStrikeLabel {
+@implementation AAStrikeTextField {
     bool _strikeThrough;
     CALayer* _strikeThroughLayer;
 }
@@ -22,7 +22,6 @@ const float STRIKEOUT_THICKNESS = 2.0f;
         _strikeThroughLayer.backgroundColor = [[UIColor whiteColor] CGColor];
         _strikeThroughLayer.hidden = YES;
         [self.layer addSublayer:_strikeThroughLayer];
-        self.numberOfLines = 0;
     }
     return self;
 }

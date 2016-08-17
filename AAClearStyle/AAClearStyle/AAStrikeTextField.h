@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AAStrikeLabel : UILabel
+@interface AAStrikeTextField : UITextField
 
 @property (nonatomic)bool strikeThrough;
 

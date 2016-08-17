@@ -46,6 +46,8 @@ const float UI_CUES_WIDTH = 50.0f;
         [self.layer insertSublayer:_itemCompleteLayer atIndex:0];
         
         [self addPanGesture];
+        
+        _labelText.delegate = self;
     }
 }
 
@@ -56,7 +58,7 @@ const float LABEL_LEFT_MARGIN = 15.0f;
     
     _gradientLayer.frame = self.bounds;
     _itemCompleteLayer.frame = self.bounds;
-    _strikeLabel.frame = CGRectMake(LABEL_LEFT_MARGIN, 0,
+    _labelText.frame = CGRectMake(LABEL_LEFT_MARGIN, 0,
                                     self.bounds.size.width - LABEL_LEFT_MARGIN, self.bounds.size.height);
     _tickLabel.frame = CGRectMake(-UI_CUES_WIDTH - UI_CUES_MARGIN, 0,
                                   UI_CUES_WIDTH, self.bounds.size.height);
@@ -66,51 +68,51 @@ const float LABEL_LEFT_MARGIN = 15.0f;
 
 - (void)setTodoItem:(AATodoItem*)toDoItem {
     _todoItem = toDoItem;
-    _strikeLabel.text = toDoItem.text;
-    _strikeLabel.strikeThrough = toDoItem.completed;
+    _labelText.text = toDoItem.text;
+    _labelText.strikeThrough = toDoItem.completed;
     _itemCompleteLayer.hidden = !toDoItem.completed;
 }
 
 - (void)createStrileAndComplete {
-    _strikeLabel = [[AAStrikeLabel alloc]initWithFrame:CGRectNull];
-    _strikeLabel.textColor = [UIColor whiteColor];
-    _strikeLabel.font = [UIFont boldSystemFontOfSize:16];
-    _strikeLabel.backgroundColor = [UIColor clearColor];
-    [self addSubview:_strikeLabel];
+    _labelText = [[AAStrikeTextField alloc]initWithFrame:CGRectNull];
+    _labelText.textColor = [UIColor whiteColor];
+    _labelText.font = [UIFont boldSystemFontOfSize:16];
+    _labelText.backgroundColor = [UIColor clearColor];
+    [self addSubview:_labelText];
     
-//    _strikeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//    NSLayoutConstraint* top = [NSLayoutConstraint
-//                               constraintWithItem:_strikeLabel
-//                               attribute:NSLayoutAttributeTop
-//                               relatedBy:NSLayoutRelationGreaterThanOrEqual
-//                               toItem:self
-//                               attribute:NSLayoutAttributeTop
-//                               multiplier:1.0
-//                               constant:5];
-//    NSLayoutConstraint* bottom = [NSLayoutConstraint
-//                                  constraintWithItem:_strikeLabel
-//                                  attribute:NSLayoutAttributeBottom
-//                                  relatedBy:NSLayoutRelationGreaterThanOrEqual
-//                                  toItem:self
-//                                  attribute:NSLayoutAttributeBottom
-//                                  multiplier:1.0
-//                                  constant:5];
-//    NSLayoutConstraint* leading = [NSLayoutConstraint
-//                                   constraintWithItem:_strikeLabel
-//                                   attribute:NSLayoutAttributeLeading
-//                                   relatedBy:NSLayoutRelationGreaterThanOrEqual
-//                                   toItem:self
-//                                   attribute:NSLayoutAttributeLeading
-//                                   multiplier:1.0
-//                                   constant:5];
-//    NSLayoutConstraint* trailing = [NSLayoutConstraint
-//                                    constraintWithItem:_strikeLabel
-//                                    attribute:NSLayoutAttributeTrailing
-//                                    relatedBy:NSLayoutRelationGreaterThanOrEqual
-//                                    toItem:self
-//                                    attribute:NSLayoutAttributeTrailing
-//                                    multiplier:1.0 constant:5];
-//    [self addConstraints:@[top, bottom, leading, trailing]];
+    _labelText.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint* top = [NSLayoutConstraint
+                               constraintWithItem:_labelText
+                               attribute:NSLayoutAttributeTop
+                               relatedBy:NSLayoutRelationGreaterThanOrEqual
+                               toItem:self
+                               attribute:NSLayoutAttributeTop
+                               multiplier:1.0
+                               constant:5];
+    NSLayoutConstraint* bottom = [NSLayoutConstraint
+                                  constraintWithItem:_labelText
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                  toItem:self
+                                  attribute:NSLayoutAttributeBottom
+                                  multiplier:1.0
+                                  constant:5];
+    NSLayoutConstraint* leading = [NSLayoutConstraint
+                                   constraintWithItem:_labelText
+                                   attribute:NSLayoutAttributeLeading
+                                   relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                   toItem:self
+                                   attribute:NSLayoutAttributeLeading
+                                   multiplier:1.0
+                                   constant:5];
+    NSLayoutConstraint* trailing = [NSLayoutConstraint
+                                    constraintWithItem:_labelText
+                                    attribute:NSLayoutAttributeTrailing
+                                    relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                    toItem:self
+                                    attribute:NSLayoutAttributeTrailing
+                                    multiplier:1.0 constant:5];
+    [self addConstraints:@[top, bottom, leading, trailing]];
 }
 
 - (void) createTickAndCrossLabel {
@@ -167,8 +169,7 @@ const float LABEL_LEFT_MARGIN = 15.0f;
         
         _markCompleteOnDragRelease = self.frame.origin.x > self.frame.size.width / 3;
         
-        float cueAlpha = fabsf(self.frame.origin.x) / (self.frame.size.width / 3);
-        NSLog(@"%f", cueAlpha);
+        float cueAlpha = fabs(self.frame.origin.x) / (self.frame.size.width / 3);
         _tickLabel.alpha = cueAlpha;
         _crossLabel.alpha = cueAlpha;
         
@@ -198,9 +199,32 @@ const float LABEL_LEFT_MARGIN = 15.0f;
             //mark the item as complete and update the UI state
             self.todoItem.completed = YES;
             _itemCompleteLayer.hidden = NO;
-            _strikeLabel.strikeThrough = YES;
+            _labelText.strikeThrough = YES;
         }
     }
+}
+
+#pragma mark - UITextField Delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    return [textField resignFirstResponder];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    return !self.todoItem.completed;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.todoItem.text = textField.text;
+    [self.delegate cellDidEndEditing:self];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self.delegate cellDidBeginEditing:self];
+}
+
+#pragma mark - Getter and Setter
+- (AAStrikeTextField*)getLabelText {
+    return _labelText;
 }
 
 @end

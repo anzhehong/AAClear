@@ -8,23 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "AATodoItem.h"
-#import "AAStrikeLabel.h"
+#import "AAStrikeTextField.h"
+#import "AAClearCellDelegate.h"
 
-@protocol AAClearCellDelegate <NSObject>
 
-/**
- *  indicates that the given item has been deleted
- */
-- (void)toDoItemDeleted:(AATodoItem*)toDoItem;
-
-@end
-
-@interface AAClearCell : UITableViewCell {
+@interface AAClearCell : UITableViewCell <UITextFieldDelegate> {
     CGPoint _originalCenter;
     BOOL _deleteOnDragRelease;
     bool _markCompleteOnDragRelease;
     
-    AAStrikeLabel* _strikeLabel;
+    AAStrikeTextField* _labelText;
     CALayer* _itemCompleteLayer;
     
 }
@@ -32,6 +25,8 @@
 @property (nonatomic) AATodoItem* todoItem;
 
 @property (nonatomic, assign) id<AAClearCellDelegate> delegate;
+
+- (AAStrikeTextField*)getLabelText;
 
 @end
 

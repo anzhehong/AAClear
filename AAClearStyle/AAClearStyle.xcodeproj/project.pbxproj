@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D45997971D644EB200B1EA3A /* AAClearView.m in Sources */ = {isa = PBXBuildFile; fileRef = D45997961D644EB200B1EA3A /* AAClearView.m */; };
+		D459979D1D6459C500B1EA3A /* AAClearPullToAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D459979C1D6459C500B1EA3A /* AAClearPullToAdd.m */; };
+		D45997A01D645A9600B1EA3A /* AAClearTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D459979F1D645A9600B1EA3A /* AAClearTableView.m */; };
 		D49E5EF21D62D90600AA3CDA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D49E5EF11D62D90600AA3CDA /* main.m */; };
 		D49E5EF51D62D90600AA3CDA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D49E5EF41D62D90600AA3CDA /* AppDelegate.m */; };
 		D49E5EFB1D62D90600AA3CDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D49E5EF91D62D90600AA3CDA /* Main.storyboard */; };
@@ -18,7 +21,7 @@
 		D49E5F2E1D6303DB00AA3CDA /* AATodoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D49E5F2D1D6303DB00AA3CDA /* AATodoItem.m */; };
 		D49E5F311D63058F00AA3CDA /* AAClearCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D49E5F301D63058F00AA3CDA /* AAClearCell.m */; };
 		D49E5F331D631BC200AA3CDA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D49E5F321D631BC200AA3CDA /* QuartzCore.framework */; };
-		D49E5F361D6407CA00AA3CDA /* AAStrikeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D49E5F351D6407CA00AA3CDA /* AAStrikeLabel.m */; };
+		D49E5F361D6407CA00AA3CDA /* AAStrikeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D49E5F351D6407CA00AA3CDA /* AAStrikeTextField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +42,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D45997951D644EB200B1EA3A /* AAClearView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAClearView.h; sourceTree = "<group>"; };
+		D45997961D644EB200B1EA3A /* AAClearView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAClearView.m; sourceTree = "<group>"; };
+		D459979B1D6459C500B1EA3A /* AAClearPullToAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAClearPullToAdd.h; sourceTree = "<group>"; };
+		D459979C1D6459C500B1EA3A /* AAClearPullToAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAClearPullToAdd.m; sourceTree = "<group>"; };
+		D459979E1D645A9600B1EA3A /* AAClearTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAClearTableView.h; sourceTree = "<group>"; };
+		D459979F1D645A9600B1EA3A /* AAClearTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAClearTableView.m; sourceTree = "<group>"; };
+		D45997A21D646B7E00B1EA3A /* AAClearCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAClearCellDelegate.h; sourceTree = "<group>"; };
 		D49E5EED1D62D90600AA3CDA /* AAClearStyle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AAClearStyle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D49E5EF11D62D90600AA3CDA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D49E5EF31D62D90600AA3CDA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -60,8 +70,8 @@
 		D49E5F2F1D63058F00AA3CDA /* AAClearCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAClearCell.h; sourceTree = "<group>"; };
 		D49E5F301D63058F00AA3CDA /* AAClearCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAClearCell.m; sourceTree = "<group>"; };
 		D49E5F321D631BC200AA3CDA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		D49E5F341D6407CA00AA3CDA /* AAStrikeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAStrikeLabel.h; sourceTree = "<group>"; };
-		D49E5F351D6407CA00AA3CDA /* AAStrikeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAStrikeLabel.m; sourceTree = "<group>"; };
+		D49E5F341D6407CA00AA3CDA /* AAStrikeTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAStrikeTextField.h; sourceTree = "<group>"; };
+		D49E5F351D6407CA00AA3CDA /* AAStrikeTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAStrikeTextField.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +178,7 @@
 			children = (
 				D49E5F2C1D6303DB00AA3CDA /* AATodoItem.h */,
 				D49E5F2D1D6303DB00AA3CDA /* AATodoItem.m */,
+				D45997A21D646B7E00B1EA3A /* AAClearCellDelegate.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -177,8 +188,14 @@
 			children = (
 				D49E5F2F1D63058F00AA3CDA /* AAClearCell.h */,
 				D49E5F301D63058F00AA3CDA /* AAClearCell.m */,
-				D49E5F341D6407CA00AA3CDA /* AAStrikeLabel.h */,
-				D49E5F351D6407CA00AA3CDA /* AAStrikeLabel.m */,
+				D49E5F341D6407CA00AA3CDA /* AAStrikeTextField.h */,
+				D49E5F351D6407CA00AA3CDA /* AAStrikeTextField.m */,
+				D45997951D644EB200B1EA3A /* AAClearView.h */,
+				D45997961D644EB200B1EA3A /* AAClearView.m */,
+				D459979E1D645A9600B1EA3A /* AAClearTableView.h */,
+				D459979F1D645A9600B1EA3A /* AAClearTableView.m */,
+				D459979B1D6459C500B1EA3A /* AAClearPullToAdd.h */,
+				D459979C1D6459C500B1EA3A /* AAClearPullToAdd.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -314,12 +331,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D49E5F361D6407CA00AA3CDA /* AAStrikeLabel.m in Sources */,
+				D49E5F361D6407CA00AA3CDA /* AAStrikeTextField.m in Sources */,
 				D49E5EF51D62D90600AA3CDA /* AppDelegate.m in Sources */,
 				D49E5F251D63018600AA3CDA /* AAClearTableViewController.m in Sources */,
+				D45997A01D645A9600B1EA3A /* AAClearTableView.m in Sources */,
 				D49E5F2E1D6303DB00AA3CDA /* AATodoItem.m in Sources */,
+				D45997971D644EB200B1EA3A /* AAClearView.m in Sources */,
 				D49E5EF21D62D90600AA3CDA /* main.m in Sources */,
 				D49E5F311D63058F00AA3CDA /* AAClearCell.m in Sources */,
+				D459979D1D6459C500B1EA3A /* AAClearPullToAdd.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
